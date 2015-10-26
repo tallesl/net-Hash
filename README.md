@@ -9,7 +9,7 @@ A password hasher that generates a unique [salt](http://en.wikipedia.org/wiki/Sa
 
 Instantiating:
 
-```csharp
+```cs
 using PwdHasher;
 
 var hasher = new PasswordHasher();
@@ -17,14 +17,14 @@ var hasher = new PasswordHasher();
 
 Hashing a password:
 
-```csharp
-var hashedPassword = hasher.HashIt("my cr4zy pa$$w0rd"); // returns a HashedPassword object, with has a hash and a salt
-                                                         // a salt is generated for each hash
+```cs
+var hashedPassword = hasher.HashIt("my cr4zy pa$$w0rd"); // returns a HashedPassword object, which has a hash and a salt
+                                                         // a new salt is generated for each hash
 ```
 
 Checking a password:
 
-```csharp
+```cs
 if (hasher.Check(somePassword, hashedPassword))
 {
     // the given password matches the given hash
