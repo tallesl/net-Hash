@@ -1,6 +1,7 @@
 ﻿namespace HashLibrary
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Security.Cryptography;
     using System.Text;
 
@@ -17,11 +18,13 @@
         /// <summary>
         /// Length of the generated hash.
         /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "It's readonly.")]
         public readonly int HashLength;
 
         /// <summary>
         /// Length of the generated salt.
         /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "It's readonly.")]
         public readonly int SaltLength;
 
         /// <summary>
@@ -36,6 +39,12 @@
         /// <param name="saltLength">Length of the generated salt</param>
         public Hasher(int hashLength, int saltLength)
         {
+            if (hashLength <= 0)
+                throw new ArgumentOutOfRangeException("hashLength");
+
+            if (saltLength <= 0)
+                throw new ArgumentOutOfRangeException("saltLength");
+
             HashLength = hashLength;
             SaltLength = saltLength;
         }
@@ -46,8 +55,16 @@
         /// <param name="password">Password to hash</param>
         /// <param name="hashed">Hash to check to</param>
         /// <returns>If the given password hash is equal to the given hash</returns>
+        /// <exception cref="ArgumentNullException">If the given password is null</exception>
+        /// <exception cref="ArgumentNullException">If the given hashed password is null</exception>
         public bool Check(string password, HashedPassword hashed)
         {
+            if (password == null)
+                throw new ArgumentNullException("password");
+
+            if (hashed == null)
+                throw new ArgumentNullException("hashed");
+
             var bytes = Encoding.GetBytes(hashed.Salt);
             return hashed.Hash == HashPassword(password, bytes);
         }
