@@ -8,8 +8,8 @@
     <ProjectGuid>{2D7E30A0-F445-4DB7-8BDC-23FC1B68B6E3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PwdHasher</RootNamespace>
-    <AssemblyName>PasswordHasher</AssemblyName>
+    <RootNamespace>HashLibrary</RootNamespace>
+    <AssemblyName>Hash</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -29,14 +29,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\PasswordHasher.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Hash.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HashedPassword.cs" />
-    <Compile Include="PasswordHasher.cs" />
+    <Compile Include="Hasher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

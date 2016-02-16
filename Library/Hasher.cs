@@ -1,4 +1,4 @@
-﻿namespace PwdHasher
+﻿namespace HashLibrary
 {
     using System;
     using System.Security.Cryptography;
@@ -7,7 +7,7 @@
     /// <summary>
     /// A password hasher.
     /// </summary>
-    public class PasswordHasher
+    public class Hasher
     {
         /// <summary>
         /// Extended ASCII.
@@ -15,29 +15,29 @@
         private static Encoding Encoding = Encoding.GetEncoding(437);
 
         /// <summary>
-        /// Size of the generated hash.
+        /// Length of the generated hash.
         /// </summary>
-        public readonly int HashSize;
+        public readonly int HashLength;
 
         /// <summary>
-        /// Size of the generated salt.
+        /// Length of the generated salt.
         /// </summary>
-        public readonly int SaltSize;
-
-        /// <summary>
-        /// Ctor.
-        /// </summary>
-        public PasswordHasher() : this(32, 32) { }
+        public readonly int SaltLength;
 
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="hashSize">Size of the generated hash</param>
-        /// <param name="saltSize">Size of the generated salt</param>
-        public PasswordHasher(int hashSize, int saltSize)
+        public Hasher() : this(32, 32) { }
+
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="hashLength">Length of the generated hash</param>
+        /// <param name="saltLength">Length of the generated salt</param>
+        public Hasher(int hashLength, int saltLength)
         {
-            HashSize = hashSize;
-            SaltSize = saltSize;
+            HashLength = hashLength;
+            SaltLength = saltLength;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@
         public bool Check(string password, HashedPassword hashed)
         {
             var bytes = Encoding.GetBytes(hashed.Salt);
-            return hashed.Hash == HashIt(password, bytes);
+            return hashed.Hash == HashPassword(password, bytes);
         }
 
         /// <summary>
@@ -57,10 +57,10 @@
         /// </summary>
         /// <param name="password">Password to salt then hash</param>
         /// <returns>The salted and hashed password</returns>
-        public HashedPassword HashIt(string password)
+        public HashedPassword HashPassword(string password)
         {
             var bytes = GenerateSalt();
-            var hash = HashIt(password, bytes);
+            var hash = HashPassword(password, bytes);
             var salt = Encoding.GetString(bytes);
             return new HashedPassword(hash, salt);
         }
@@ -71,11 +71,11 @@
         /// <param name="password">Password to salt then hash</param>
         /// <param name="salt">Salt to be used</param>
         /// <returns>The salted and hashed password</returns>
-        private string HashIt(string password, byte[] salt)
+        private string HashPassword(string password, byte[] salt)
         {
             using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt))
             {
-                var bytes = pbkdf2.GetBytes(HashSize);
+                var bytes = pbkdf2.GetBytes(HashLength);
                 return Encoding.GetString(bytes);
             }
         }
@@ -87,7 +87,7 @@
         private byte[] GenerateSalt()
         {
             var random = new Random(unchecked((int)DateTime.Now.Ticks));
-            var salt = new byte[SaltSize];
+            var salt = new byte[SaltLength];
             random.NextBytes(salt);
             return salt;
         }

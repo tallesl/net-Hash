@@ -1,4 +1,4 @@
-﻿namespace PwdHasher
+﻿namespace HashLibrary
 {
     using System;
     using System.Collections.Generic;

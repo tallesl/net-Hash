@@ -1,25 +1,32 @@
-# Password Hasher
+# Hash
 
-[![build](https://ci.appveyor.com/api/projects/status/github/tallesl/PasswordHasher)](https://ci.appveyor.com/project/TallesL/PasswordHasher)
-[![nuget package](https://badge.fury.io/nu/PasswordHasher.png)](http://badge.fury.io/nu/PasswordHasher)
+[![][build-img]][build]
+[![][nuget-img]][nuget]
 
-A password hasher that generates a unique [salt](http://en.wikipedia.org/wiki/Salt_%28cryptography%29) for each hash and hashes using [PBKDF2](http://en.wikipedia.org/wiki/PBKDF2).
+A password hasher that generates a unique [salt] for each hash and hashes using [PBKDF2].
+
+[build]:     https://ci.appveyor.com/project/TallesL/net-hash
+[build-img]: https://ci.appveyor.com/api/projects/status/github/tallesl/net-hash?svg=true
+[nuget]:     https://www.nuget.org/packages/Hash
+[nuget-img]: https://badge.fury.io/nu/Hash.svg
+[salt]:      http://en.wikipedia.org/wiki/Salt_%28cryptography%29
+[PBKDF2]:    http://en.wikipedia.org/wiki/PBKDF2
 
 ## Usage
 
 Instantiating:
 
 ```cs
-using PwdHasher;
+using HashLibrary;
 
-var hasher = new PasswordHasher();
+var hasher = new Hasher();
 ```
 
 Hashing a password:
 
 ```cs
-var hashedPassword = hasher.HashIt("my cr4zy pa$$w0rd"); // returns a HashedPassword object, which has a hash and a salt
-                                                         // a new salt is generated for each hash
+var hashedPassword = hasher.HashPassword("my cr4zy pa$$w0rd"); // returns a HashedPassword object, which has a hash and a salt
+                                                               // a new salt is generated for each hash
 ```
 
 Checking a password:

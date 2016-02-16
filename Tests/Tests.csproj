@@ -9,8 +9,8 @@
     <ProjectGuid>{C0B9E146-18D9-47A9-9844-E17D31FEE873}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PwdHasher.Tests</RootNamespace>
-    <AssemblyName>PasswordHasher.Tests</AssemblyName>
+    <RootNamespace>HashLibrary.Tests</RootNamespace>
+    <AssemblyName>Hash.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -49,9 +49,9 @@
     <Compile Include="Tests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PasswordHasher\PasswordHasher.csproj">
+    <ProjectReference Include="..\Library\Library.csproj">
       <Project>{2D7E30A0-F445-4DB7-8BDC-23FC1B68B6E3}</Project>
-      <Name>PasswordHasher</Name>
+      <Name>Hash</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
