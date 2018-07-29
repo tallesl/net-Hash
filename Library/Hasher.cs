@@ -13,7 +13,7 @@
         /// <summary>
         /// Extended ASCII.
         /// </summary>
-        private static Encoding Encoding = Encoding.GetEncoding(437);
+        private static Encoding _encoding;
 
         /// <summary>
         /// Length of the generated hash.
@@ -47,6 +47,12 @@
 
             HashLength = hashLength;
             SaltLength = saltLength;
+
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            _encoding = Encoding.GetEncoding(437);
         }
 
         /// <summary>
@@ -65,7 +71,7 @@
             if (hashed == null)
                 throw new ArgumentNullException("hashed");
 
-            var bytes = Encoding.GetBytes(hashed.Salt);
+            var bytes = _encoding.GetBytes(hashed.Salt);
             return hashed.Hash == HashPassword(password, bytes);
         }
 
@@ -78,7 +84,7 @@
         {
             var bytes = GenerateSalt();
             var hash = HashPassword(password, bytes);
-            var salt = Encoding.GetString(bytes);
+            var salt = _encoding.GetString(bytes);
             return new HashedPassword(hash, salt);
         }
 
@@ -93,7 +99,7 @@
             using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt))
             {
                 var bytes = pbkdf2.GetBytes(HashLength);
-                return Encoding.GetString(bytes);
+                return _encoding.GetString(bytes);
             }
         }
 
