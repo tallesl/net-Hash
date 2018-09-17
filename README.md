@@ -14,25 +14,15 @@ A password hasher that generates a unique [salt] for each hash and hashes using 
 
 ## Usage
 
-Instantiating:
-
 ```cs
-using HashLibrary;
+var plainPassword = "my cr4zy pa$$w0rd";
 
-var hasher = new Hasher();
-```
+// gives a HashedPassword object
+// which has Hash and Salt properties ready to be stored somewhere
+var hash = HashedPassword.New(plainPassword);
 
-Hashing a password:
-
-```cs
-var hashedPassword = hasher.HashPassword("my cr4zy pa$$w0rd"); // returns a HashedPassword object, which has a hash and a salt
-                                                               // a new salt is generated for each hash
-```
-
-Checking a password:
-
-```cs
-if (hasher.Check(somePassword, hashedPassword))
+// checking the plain text password against the hashed one
+if (hash.Check(plainPassword))
 {
     // the given password matches the given hash
 }

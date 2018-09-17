@@ -9,43 +9,37 @@
         [TestMethod]
         public void Empty()
         {
-            var hasher = new Hasher();
-            var hashed = hasher.HashPassword(string.Empty);
+            var hash = HashedPassword.New(string.Empty);
 
-            Assert.IsTrue(hasher.Check(string.Empty, hashed));
-            Assert.IsFalse(hasher.Check(" ", hashed));
-
-            Assert.AreEqual(hasher.HashLength, hashed.Hash.Length);
-            Assert.AreEqual(hasher.SaltLength, hashed.Salt.Length);
+            Assert.IsTrue(hash.Check(string.Empty));
+            Assert.IsFalse(hash.Check(" "));
         }
 
         [TestMethod]
         public void DefaultLengths()
         {
-            var hasher = new Hasher();
-            var hashed = hasher.HashPassword("foo");
+            var hash = HashedPassword.New("foo");
 
-            Assert.IsTrue(hasher.Check("foo", hashed));
-            Assert.IsFalse(hasher.Check("bar", hashed));
-
-            Assert.AreEqual(hasher.HashLength, hashed.Hash.Length);
-            Assert.AreEqual(hasher.SaltLength, hashed.Salt.Length);
+            Assert.IsTrue(hash.Check("foo"));
+            Assert.IsFalse(hash.Check("bar"));
         }
 
         [TestMethod]
         public void CustomLengths()
         {
-            var hasher = new Hasher(100, 8);
-            var hashed = hasher.HashPassword("foo");
+            var hashLength = 100;
+            var saltLength = 8;
 
-            Assert.IsTrue(hasher.Check("foo", hashed));
-            Assert.IsFalse(hasher.Check("bar", hashed));
+            var hash = HashedPassword.New("foo", hashLength, saltLength);
 
-            Assert.AreEqual(hasher.HashLength, hashed.Hash.Length);
-            Assert.AreEqual(hasher.SaltLength, hashed.Salt.Length);
+            Assert.IsTrue(hash.Check("foo"));
+            Assert.IsFalse(hash.Check("bar"));
+
+            Assert.AreEqual(hashLength, hash.Hash.Length);
+            Assert.AreEqual(saltLength, hash.Salt.Length);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentException))]
-        public void InvalidString() => new Hasher().Check("foo", new HashedPassword("foo™", "bar"));
+        public void InvalidString() => new HashedPassword("foo™", "bar").Check("foo");
     }
 }
