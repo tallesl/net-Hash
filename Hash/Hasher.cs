@@ -18,13 +18,11 @@
         /// <summary>
         /// Length of the generated hash.
         /// </summary>
-        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "It's readonly.")]
         public readonly int HashLength;
 
         /// <summary>
         /// Length of the generated salt.
         /// </summary>
-        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "It's readonly.")]
         public readonly int SaltLength;
 
         /// <summary>
