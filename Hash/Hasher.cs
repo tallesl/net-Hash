@@ -4,16 +4,14 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Security.Cryptography;
     using System.Text;
+    using System.Linq;
 
     /// <summary>
     /// A password hasher.
     /// </summary>
     public class Hasher
     {
-        /// <summary>
-        /// Extended ASCII.
-        /// </summary>
-        private static Encoding _encoding;
+        private static readonly char[] _charset = GenerateCharset();
 
         /// <summary>
         /// Length of the generated hash.
@@ -45,10 +43,6 @@
 
             HashLength = hashLength;
             SaltLength = saltLength;
-
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            _encoding = Encoding.GetEncoding(437);
         }
 
         /// <summary>
@@ -67,8 +61,7 @@
             if (hashed == null)
                 throw new ArgumentNullException("hashed");
 
-            var bytes = _encoding.GetBytes(hashed.Salt);
-            return hashed.Hash == HashPassword(password, bytes);
+            return hashed.Hash == HashPassword(password, GetBytes(hashed.Salt));
         }
 
         /// <summary>
@@ -80,35 +73,63 @@
         {
             var bytes = GenerateSalt();
             var hash = HashPassword(password, bytes);
-            var salt = _encoding.GetString(bytes);
+            var salt = GetString(bytes);
+
             return new HashedPassword(hash, salt);
         }
 
-        /// <summary>
-        /// Salts and then hashes with PBKDF2 the given password.
-        /// </summary>
-        /// <param name="password">Password to salt then hash</param>
-        /// <param name="salt">Salt to be used</param>
-        /// <returns>The salted and hashed password</returns>
         private string HashPassword(string password, byte[] salt)
         {
             using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt))
             {
-                var bytes = pbkdf2.GetBytes(HashLength);
-                return _encoding.GetString(bytes);
+                return GetString(pbkdf2.GetBytes(HashLength));
             }
         }
 
-        /// <summary>
-        /// Generates a random salt.
-        /// </summary>
-        /// <returns>The generated salt</returns>
         private byte[] GenerateSalt()
         {
             var random = new Random(unchecked((int)DateTime.Now.Ticks));
             var salt = new byte[SaltLength];
+
             random.NextBytes(salt);
+
             return salt;
+        }
+
+        private static string GetString(byte[] bytes) => new string(bytes.Select(b => _charset[b]).ToArray());
+
+        private static byte[] GetBytes(string str)
+        {
+            var bytes = new byte[str.Length];
+
+            for (var i = 0; i < str.Length; ++i)
+            {
+                var c = str[i];
+                var index = Array.IndexOf(_charset, c);
+
+                if (index < 0)
+                    throw new ArgumentException($"Caught an invalid character: 0x{((int)c).ToString("X2")}.");
+
+                bytes[i] = (byte)index;
+            }
+
+            return bytes;
+        }
+
+        private static char[] GenerateCharset()
+        {
+            var max = byte.MaxValue + 1;
+            var charset = new char[max];
+
+            for (int i = 0, j = 0; i < max; ++i, ++j)
+            {
+                while (Char.IsControl((char)j))
+                    ++j;
+
+                charset[i] = (char)j;
+            }
+
+            return charset;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace HashLibrary.Tests
 {
+    using System;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -43,5 +44,8 @@
             Assert.AreEqual(hasher.HashLength, hashed.Hash.Length);
             Assert.AreEqual(hasher.SaltLength, hashed.Salt.Length);
         }
+
+        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        public void InvalidString() => new Hasher().Check("foo", new HashedPassword("foo™", "bar"));
     }
 }
