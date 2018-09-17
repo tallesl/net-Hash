@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <AssemblyTitle>Hash</AssemblyTitle>
-    <AssemblyVersion>3.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0</AssemblyVersion>
     <Authors>Talles L &lt;talleslasmar@gmail.com&gt;</Authors>
     <Description>A password hasher.</Description>
-    <FileVersion>3.0.0</FileVersion>
+    <FileVersion>4.0.0</FileVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>cryptography;hash;password;pbkdf2;salt</PackageTags>
-    <PackageVersion>3.0.0</PackageVersion>
+    <PackageVersion>4.0.0</PackageVersion>
     <RepositoryUrl>https://github.com/tallesl/net-Hash</RepositoryUrl>
     <TargetFramework>netstandard1.3</TargetFramework>
   </PropertyGroup>
