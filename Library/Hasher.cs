@@ -49,8 +49,6 @@
             SaltLength = saltLength;
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             _encoding = Encoding.GetEncoding(437);
         }
